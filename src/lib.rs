@@ -64,22 +64,17 @@ fn parse_term(o: &JsObject, key: &str) -> Term {
 
 /// create array and fill with increase value
 #[node_bindgen]
-fn canonize(args: Vec<JsObject>) -> Vec<String> {
+#[allow(unused_variables)]
+fn canonize(quads: Vec<JsObject>, opts: JsObject) -> Vec<String> {
     // iterate the parameters
     let mut dataset = Dataset::new();
-    for (i, item) in args.iter().enumerate() {
-        // first parameter is an array of objects
-        if i == 0 {
-            let t = item.as_value::<Vec<JsObject>>().unwrap();
-            for(_, o) in t.iter().enumerate() {
-                dataset.quad_set.push(Quad {
-                    subject: parse_term(o, "subject"),
-                    predicate: parse_term(o, "predicate"),
-                    object: parse_term(o, "object"),
-                    graph: parse_term(o, "graph"),
-                });
-            }
-        }
+    for(_, q) in quads.iter().enumerate() {
+        dataset.quad_set.push(Quad {
+            subject: parse_term(q, "subject"),
+            predicate: parse_term(q, "predicate"),
+            object: parse_term(q, "object"),
+            graph: parse_term(q, "graph"),
+        });
     }
 
     let mut array = vec![];
