@@ -1,6 +1,7 @@
 use node_bindgen::derive::node_bindgen;
 use node_bindgen::core::val::JsObject;
 
+#[allow(non_camel_case_types)]
 enum TermType {
     BLANK_NODE,
     NAMED_NODE,
@@ -9,7 +10,7 @@ enum TermType {
 }
 
 struct Term {
-    termType: TermType,
+    term_type: TermType,
     value: String,
 }
 
@@ -49,9 +50,19 @@ fn match_term_type(t: &String) -> Option<TermType> {
     }
 }
 
+fn parse_term(o: &JsObject, key: &str) -> Term {
+    let subject_value = get_string(o, key, &"value");
+    let subject_term_type = get_string(o, key, &"termType");
+    // let type = match
+    Term {
+        term_type: match_term_type(&subject_term_type).unwrap(),
+        value: subject_value,
+    }
+}
+
 /// create array and fill with increase value
 #[node_bindgen]
-fn make_array(args: Vec<JsObject>) -> Vec<String> {
+fn canonize(args: Vec<JsObject>) -> Vec<String> {
     // iterate the parameters
     let mut dataset = Dataset::new();
     for (i, item) in args.iter().enumerate() {
@@ -59,15 +70,9 @@ fn make_array(args: Vec<JsObject>) -> Vec<String> {
         if i == 0 {
             let t = item.as_value::<Vec<JsObject>>().unwrap();
             for(_, o) in t.iter().enumerate() {
-                let subject_value = get_string(o, &"subject", &"value");
-                let subject_term_type = get_string(o, &"subject", &"termType");
-                // let type = match
-                let term = Term {
-                    termType: match_term_type(&subject_term_type).unwrap(),
-                    value: subject_value,
-                };
-                let q = Quad {subject: term};
-                dataset.quad_set.push(q);
+                dataset.quad_set.push(Quad {
+                    subject: parse_term(o, "subject"),
+                });
                 // array.push(y);
             }
         }
@@ -80,18 +85,3 @@ fn make_array(args: Vec<JsObject>) -> Vec<String> {
 
     array
 }
-
-// struct MyObject {}
-
-// #[node_bindgen]
-// impl MyObject {
-//     #[node_bindgen(constructor)]
-//     fn new() -> Self {
-//         Self {}
-//     }
-
-//     #[node_bindgen(name = "hello")]
-//     fn hello(&self) -> String {
-//         "world".to_string()
-//     }
-// }
