@@ -55,7 +55,6 @@ fn match_term_type(t: &String) -> Option<TermType> {
 fn parse_term(o: &JsObject, key: &str) -> Term {
     let subject_value = get_string(o, key, &"value");
     let subject_term_type = get_string(o, key, &"termType");
-    // let type = match
     Term {
         term_type: match_term_type(&subject_term_type).unwrap(),
         value: subject_value,
