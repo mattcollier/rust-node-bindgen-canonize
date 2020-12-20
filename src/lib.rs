@@ -9,16 +9,18 @@ enum TermType {
     DEFAULT_GRAPH,
 }
 
+#[allow(dead_code)]
 struct Term {
     term_type: TermType,
     value: String,
 }
 
+#[allow(dead_code)]
 struct Quad {
     subject: Term,
-    // predicate: Term,
-    // object: Term,
-    // graph: Term,
+    predicate: Term,
+    object: Term,
+    graph: Term,
 }
 
 struct Dataset {
@@ -72,8 +74,10 @@ fn canonize(args: Vec<JsObject>) -> Vec<String> {
             for(_, o) in t.iter().enumerate() {
                 dataset.quad_set.push(Quad {
                     subject: parse_term(o, "subject"),
+                    predicate: parse_term(o, "predicate"),
+                    object: parse_term(o, "object"),
+                    graph: parse_term(o, "graph"),
                 });
-                // array.push(y);
             }
         }
     }
