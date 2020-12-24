@@ -12,3 +12,7 @@ features = []
 [build_dependencies.node-bindgen]
 version = "2.1.1"
 features = ["build"]
+
+[dependencies]
+# rdf-canonize-rs = { git = "ssh://github.com/gannan08/rdf-canonize-rust.git", branch = "main" }
+rdf-canonize-rs = { path = "../rdf-canonize-rust" }
