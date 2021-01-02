@@ -7,8 +7,13 @@ use rdf_canonize::nquads::{
 };
 
 #[node_bindgen]
-#[allow(unused_variables)]
 fn plain_string_canonize(quads: String) {
+    let rdf_dataset = rdf_canonize::nquads::parse_nquads(&quads);
+    rdf_canonize::canonize(&rdf_dataset, "URDNA2015").unwrap();
+}
+
+#[node_bindgen]
+fn plain_string_buffer_canonize(quads: &str) {
     let rdf_dataset = rdf_canonize::nquads::parse_nquads(&quads);
     rdf_canonize::canonize(&rdf_dataset, "URDNA2015").unwrap();
 }
