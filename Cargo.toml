@@ -10,10 +10,10 @@ opt-level = 3
 [lib]
 crate-type = ["cdylib"]
 [dependencies.node-bindgen]
-version = "2.1.1"
+path = "../../fork/node-bindgen"
 features = []
 [build_dependencies.node-bindgen]
-version = "2.1.1"
+path = "../../fork/node-bindgen"
 features = ["build"]
 
 [dependencies]
