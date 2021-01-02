@@ -6,6 +6,13 @@ use rdf_canonize::nquads::{
     Dataset, Graph, Object, Predicate, Quad, Subject, Term, TermType,
 };
 
+#[node_bindgen]
+#[allow(unused_variables)]
+fn plain_string_canonize(quads: String) {
+    let rdf_dataset = rdf_canonize::nquads::parse_nquads(&quads);
+    rdf_canonize::canonize(&rdf_dataset, "URDNA2015").unwrap();
+}
+
 /// create array and fill with increase value
 #[node_bindgen]
 #[allow(unused_variables)]
