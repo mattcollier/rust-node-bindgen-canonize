@@ -10,7 +10,7 @@ use rdf_canonize::nquads::{
 #[node_bindgen]
 #[allow(unused_variables)]
 fn canonize(quads: Vec<JsObject>, opts: JsObject) -> String {
-    let q: QuadSet = quads.iter().map(|quad| parse_js_quad(quad)).collect();
+    let q: QuadSet = quads.iter().map(parse_js_quad).collect();
 
     let dataset = Dataset {quads: q};
 
