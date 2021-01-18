@@ -3,19 +3,16 @@ extern crate rdf_canonize;
 use node_bindgen::core::val::JsObject;
 use node_bindgen::derive::node_bindgen;
 use rdf_canonize::nquads::{
-    Dataset, Graph, Object, Predicate, Quad, Subject, Term, TermType,
+    Dataset, Graph, Object, Predicate, Quad, QuadSet, Subject, Term, TermType,
 };
 
 /// create array and fill with increase value
 #[node_bindgen]
 #[allow(unused_variables)]
 fn canonize(quads: Vec<JsObject>, opts: JsObject) -> String {
-    // iterate the parameters
-    let mut dataset = Dataset::new();
-    for q in quads.iter() {
-        let quad = parse_js_quad(q);
-        dataset.add(quad);
-    }
+    let q: QuadSet = quads.iter().map(|quad| parse_js_quad(quad)).collect();
+
+    let dataset = Dataset {quads: q};
 
     rdf_canonize::canonize(&dataset, "URDNA2015").unwrap()
 }
